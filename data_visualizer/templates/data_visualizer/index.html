@@ -1,0 +1,226 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataAnalysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#7C3AED',
+                        accent: '#F59E0B',
+                        background: '#F9FAFB',
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeInUp {
+            animation: fadeInUp 0.3s ease-out;
+        }
+        .hover-scale {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .hover-scale:hover {
+            transform: scale(1.01);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .btn-hover {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .btn-hover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                120deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            transition: all 0.2s;
+        }
+        .btn-hover:hover::before {
+            left: 100%;
+        }
+    </style>
+</head>
+<body class="h-full bg-background font-sans">
+    <div class="min-h-full flex flex-col">
+        <nav class="bg-white shadow-md">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16 items-center">
+                    <h1 class="text-2xl font-bold text-primary">Análisis de Datos Interactivo</h1>
+                </div>
+            </div>
+        </nav>
+
+        <main class="flex-grow">
+            <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                {% if messages %}
+                <div class="mb-4 space-y-2">
+                    {% for message in messages %}
+                    <div class="animate-fadeInUp bg-{{ message.tags }}-100 border-l-4 border-{{ message.tags }}-500 text-{{ message.tags }}-700 p-4 rounded-r-lg" role="alert">
+                        <p class="font-medium">{{ message }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover-scale">
+                        <div class="p-6 bg-gradient-to-r from-primary to-secondary text-white">
+                            <h2 class="text-xl font-semibold mb-2">Ingresar Nuevo Dato</h2>
+                            <p class="text-sm opacity-80">Añade nuevos puntos de datos a tu análisis</p>
+                        </div>
+                        <div class="p-6">
+                            <form method="post" class="space-y-4">
+                                {% csrf_token %}
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700" for="{{ form.x_value.id_for_label }}">
+                                        Valor X
+                                    </label>
+                                    <input type="text" name="x_value" required id="id_x_value" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 transition duration-150 ease-in-out">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700" for="{{ form.y_value.id_for_label }}">
+                                        Valor Y
+                                    </label>
+                                    <input type="number" name="y_value" required id="id_y_value" step="any" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 transition duration-150 ease-in-out">
+                                </div>
+                                <div>
+                                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition duration-150 ease-in-out btn-hover">
+                                        Agregar Dato
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover-scale">
+                        <div class="p-6 bg-gradient-to-r from-secondary to-primary text-white">
+                            <h2 class="text-xl font-semibold mb-2">Importar Datos desde Excel</h2>
+                            <p class="text-sm opacity-80">Carga tus datos desde un archivo Excel</p>
+                        </div>
+                        <div class="p-6">
+                            <form method="post" action="{% url 'import_excel' %}" enctype="multipart/form-data" class="space-y-4">
+                                {% csrf_token %}
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700" for="excel_file">
+                                        Archivo Excel
+                                    </label>
+                                    <input type="file" name="excel_file" id="excel_file" accept=".xlsx" required
+                                           class="mt-1 block w-full text-sm text-gray-500
+                                                  file:mr-4 file:py-2 file:px-4
+                                                  file:rounded-md file:border-0
+                                                  file:text-sm file:font-medium
+                                                  file:bg-secondary file:text-white
+                                                  hover:file:bg-secondary-dark
+                                                  transition duration-150 ease-in-out">
+                                </div>
+                                <div>
+                                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-secondary hover:bg-secondary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary transition duration-150 ease-in-out btn-hover">
+                                        Importar Excel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 bg-white rounded-lg shadow-lg overflow-hidden hover-scale">
+                    <div class="p-6 bg-gradient-to-r from-accent to-accent-light text-white">
+                        <h2 class="text-xl font-semibold mb-2">Acciones de Datos</h2>
+                        <p class="text-sm opacity-80">Gestiona tus datos</p>
+                    </div>
+                    <div class="p-6">
+                        <form action="{% url 'delete_all_data' %}" method="post" onsubmit="return confirm('¿Estás seguro de que quieres eliminar todos los datos?');">
+                            {% csrf_token %}
+                            <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-150 ease-in-out btn-hover">
+                                Eliminar todos los datos
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                {% if plot_div %}
+                    <div class="mt-8 bg-white rounded-lg shadow-lg overflow-hidden hover-scale">
+                        <div class="p-6 bg-gradient-to-r from-primary to-secondary text-white">
+                            <h2 class="text-xl font-semibold mb-2">Visualización de Datos</h2>
+                            <p class="text-sm opacity-80">Explora tus datos de diferentes maneras</p>
+                        </div>
+                        <div class="p-6">
+                            <form method="get" class="mb-4">
+                                <label for="chart_type" class="block text-sm font-medium text-gray-700 mb-2">Tipo de Gráfico:</label>
+                                <select name="chart_type" id="chart_type" onchange="this.form.submit()" class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 transition duration-150 ease-in-out">
+                                    <option value="scatter" {% if chart_type == 'scatter' %}selected{% endif %}>Dispersión</option>
+                                    <option value="bar" {% if chart_type == 'bar' %}selected{% endif %}>Barras</option>
+                                    <option value="pie" {% if chart_type == 'pie' %}selected{% endif %}>Pastel</option>
+                                    <option value="line" {% if chart_type == 'line' %}selected{% endif %}>Línea</option>
+                                    <option value="area" {% if chart_type == 'area' %}selected{% endif %}>Área</option>
+                                    <option value="box" {% if chart_type == 'box' %}selected{% endif %}>Caja</option>
+                                    <option value="histogram" {% if chart_type == 'histogram' %}selected{% endif %}>Histograma</option>
+                                </select>
+                            </form>
+                            <div class="animate-fadeInUp">
+                                {{ plot_div|safe }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 bg-white rounded-lg shadow-lg overflow-hidden hover-scale">
+                        <div class="p-6 bg-gradient-to-r from-secondary to-primary text-white">
+                            <h2 class="text-xl font-semibold mb-2">Estadísticas</h2>
+                            <p class="text-sm opacity-80">Resumen de tus datos</p>
+                        </div>
+                        <div class="p-6">
+                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                <div class="bg-gradient-to-br from-primary to-secondary text-white rounded-lg p-4">
+                                    <p class="text-sm font-medium opacity-80">Suma Total</p>
+                                    <p class="mt-1 text-3xl font-semibold">{{ total_sum|floatformat:2 }}</p>
+                                </div>
+                                <div class="bg-gradient-to-br from-secondary to-primary text-white rounded-lg p-4">
+                                    <p class="text-sm font-medium opacity-80">Promedio</p>
+                                    <p class="mt-1 text-3xl font-semibold">{{ average|floatformat:2 }}</p>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-sm text-gray-600">
+                                <p class="font-medium mb-2">¿Qué significan estos números?</p>
+                                <p><strong>Suma Total:</strong> Es como si juntaras todos tus valores Y en un solo montón. Te ayuda a ver cuánto tienes en total.</p>
+                                <p><strong>Promedio:</strong> Imagina que repartes todos tus valores Y de manera igual. El promedio es lo que le tocaría a cada uno. Te da una idea de cómo son tus datos en general.</p>
+                                <p class="mt-2">Estos números te ayudan a entender tus datos de un vistazo, sin tener que mirar cada punto uno por uno.</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </main>
+
+        <footer class="bg-white-400 text-black mt-auto">
+            <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                <p class="text-center text-sm">&copy; 2023 Análisis de Datos Interactivo. Todos los derechos reservados.</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

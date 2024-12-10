@@ -1,0 +1,196 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataAnalysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#7C3AED',
+                        accent: '#F59E0B',
+                        background: '#F9FAFB',
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .btn-hover {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .btn-hover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                120deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            transition: all 0.5s;
+        }
+        .btn-hover:hover::before {
+            left: 100%;
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+    </style>
+</head>
+{% load static %}
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Datos Interactivo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#7C3AED',
+                        accent: '#F59E0B',
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .btn-hover {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .btn-hover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: all 0.5s;
+        }
+        .btn-hover:hover::before {
+            left: 100%;
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body class="h-full bg-gradient-to-b from-gray-50 to-white font-sans">
+    <div class="min-h-full flex flex-col">
+        <nav class="bg-white shadow-md sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16 items-center">
+                    <a href="#" class="flex items-center">
+                        
+                        <h1 class="text-2xl font-bold text-primary">Data Analysis</h1>
+                    </a>
+                    <div class="hidden md:flex space-x-4">
+                        <a href="#features" class="text-gray-600 hover:text-primary transition duration-150 ease-in-out">Características</a>
+                        <a href="#testimonial" class="text-gray-600 hover:text-primary transition duration-150 ease-in-out">Nosotros</a>
+                        <a href="#" class="text-gray-600 hover:text-primary transition duration-150 ease-in-out">Contacto</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main class="flex-grow">
+            <section class="py-16 px-4 mt-5 sm:px-6 lg:px-8">
+                <div class="max-w-7xl mx-auto">
+                    <div class="text-center">
+                        <h2 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+                            <span class="block">Potencia tus datos con</span>
+                            <span class="block text-primary">Análisis Interactivo</span>
+                        </h2>
+                        <p class="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
+                            Descubre insights valiosos, visualiza tendencias y toma decisiones informadas con nuestra plataforma de análisis de datos fácil de usar.
+                        </p>
+                        <div class="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-5">
+                            <div class="rounded-md shadow">
+                                <a href="{% url 'index' %}" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary hover:bg-primary-dark md:py-4 md:text-lg md:px-10 transition duration-150 ease-in-out btn-hover">
+                                    Comenzar Análisis
+                                </a>
+                            </div>
+                            <div class="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
+                                <a href="#features" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-primary bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10 transition duration-150 ease-in-out">
+                                    Saber más
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3 flex justify-center">
+                        <img src="{% static 'bg.gif' %}" alt="Data Analysis Illustration" class="max-w-[700px] object-contain mb-5">
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <section id="testimonial" class="py-20 bg-primary text-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-extrabold mb-8">Lo que dicen nuestros clientes</h2>
+                    <blockquote class="text-xl italic">
+                        "DataAnalysis ha transformado la forma en que analizamos nuestros datos. Es intuitivo, potente y nos ha ayudado a tomar mejores decisiones de negocio."
+                    </blockquote>
+                    <p class="mt-4 font-semibold">Rene Puente, CEO de DataAnalysis</p>
+                </div>
+            </div>
+        </section>
+        
+        <footer class="bg-neutral-900 text-white">
+            <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-sm">&copy; 2023 DataAnalysis. Todos los derechos reservados.</p>
+                    <div class="mt-4 md:mt-0">
+                        <a href="#" class="text-sm hover:text-gray-300 mr-4">Política de Privacidad</a>
+                        <a href="#" class="text-sm hover:text-gray-300">Términos de Servicio</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
